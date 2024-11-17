@@ -1,23 +1,16 @@
-import React, { useState } from "react";
-import "./style.css";
-
-function randomValueFromArray(array) {
-  const random = Math.floor(Math.random() * array.length);
-  return array[random];
-}
-
+import { useEffect, useState } from "react";
 
 export default function App() {
-  const [name, setName] = useState("");
-  const [unit, setUnit] = useState("us");
   const [story, setStory] = useState("");
-
-  const generateStory = async () => {
-    const response = await fetch("./hello");
-    const data = await response.json();
-    setStory(data.story);
-  };
-
+  useEffect(() => {
+    const fetchStory = async () => {
+      const response = await fetch("/.netlify/functions/hello");
+      const story = await response.json();
+      setStory(story.message);  
+    };
+    fetchStory();
+  }, []);
+  
   return (
     <>
       <div>
